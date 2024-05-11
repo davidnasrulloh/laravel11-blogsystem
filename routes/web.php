@@ -1,7 +1,9 @@
 <?php
 
+use App\Models\Post;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Route;
+
 
 Route::get('/', function () {
     return view('home', [
@@ -21,48 +23,13 @@ Route::get('/about', function () {
 Route::get('/posts', function () {
     return view('posts', [
         'title' => 'Posts',
-        'posts' => [
-            [
-                'id' => 1,
-                'title' => 'Judul Artikel 1',
-                'slug' => 'judul-artikel-1',
-                'author' => 'David Nasrulloh',
-                'body' => 'Lorem, ipsum dolor sit amet consectetur adipisicing elit. Sed ipsum distinctio ipsam blanditiis ex qui! Adipisci et iure quidem laudantium!'
-            ],
-            [
-                'id' => 2,
-                'title' => 'Judul Artikel 2',
-                'slug' => 'judul-artikel-2',
-                'author' => 'David Nasrulloh',
-                'body' => 'Lorem, ipsum dolor sit amet consectetur adipisicing elit. Sed ipsum distinctio ipsam blanditiis ex qui! Adipisci et iure quidem laudantium!'
-            ]
-        ]
+        'posts' => Post::all()
     ]);
 });
 
 Route::get('/posts/{slug}', function($slug){
-
-    $posts = [
-        [
-            'id' => 1,
-            'slug' => 'judul-artikel-1',
-            'title' => 'Judul Artikel 1',
-            'author' => 'David Nasrulloh',
-            'body' => 'Lorem, ipsum dolor sit amet consectetur adipisicing elit. Sed ipsum distinctio ipsam blanditiis ex qui! Adipisci et iure quidem laudantium!'
-        ],
-        [
-            'id' => 2,
-            'title' => 'Judul Artikel 2',
-            'slug' => 'judul-artikel-2',
-            'author' => 'David Nasrulloh',
-            'body' => 'Lorem, ipsum dolor sit amet consectetur adipisicing elit. Sed ipsum distinctio ipsam blanditiis ex qui! Adipisci et iure quidem laudantium!'
-        ]
-    ];
-
-    $post = Arr::first($posts, function($post) use ($slug){
-        return $post['slug'] == $slug;
-    });
-
+    $post = Post::find($slug);
+    
     // dd($post);
     return view('post', [
         'title' => 'Single Post',
